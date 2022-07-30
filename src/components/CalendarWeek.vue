@@ -1,29 +1,40 @@
 <template>
-    <div class="row border border-info">
-        <div v-for="(day, index) in days"
-             :key="index"
-             @click="openBanner()"
-             class="calendar-day col py-1"
-             :class="{'': day.date}">
+    <div class="row">
+        <div v-for="(day, index) in days" :key="index" @click="toggleBanner()"
+             class="calendar-day col text-center border border-dark py-1">
             <p class="mb-0">{{ day.date }}</p>
         </div>
-        <div class="calendar-banner bg-warning" :class="{'d-none': bannerIsClosed}"></div>
+        <div class="calendar-banner bg-warning" :class="{'d-none': bannerIsClosed}">
+
+<!--            HERE WE NEED TO INJECTS EVENTS... -->
+
+        </div>
     </div>
 </template>
 
 <script>
 export default {
     name: 'CalendarWeek',
-    props: ['days', 'weeknum'],
+    props: ['days'],
     data() {
         return {
             bannerIsClosed: true,
+            events: [
+                {
+                    title: 'Cher parents',
+                    time: '17:30'
+                },
+                {
+                    title: 'Cher parents',
+                    time: '20:30'
+                },
+            ],
         }
     },
     methods: {
-      openBanner() {
-          this.bannerIsClosed = !this.bannerIsClosed;
-      }
+        toggleBanner() {
+            this.bannerIsClosed = !this.bannerIsClosed;
+        }
     },
 }
 </script>
@@ -32,8 +43,8 @@ export default {
 .calendar-day {
     height: 80px;
 }
+
 .calendar-banner {
     height: 140px;
 }
-
 </style>

@@ -1,9 +1,7 @@
 <template>
     <div id="calendar-body" class="col py-2">
-
-        <calendar-week v-for="(days, index) in weeks" :key="index"
-                       :days="days"
-                       :weeknum="index"></calendar-week>
+        <calendar-week v-for="(days, index) in weeks" :key="index" :days="days">
+        </calendar-week>
     </div>
 </template>
 
@@ -24,5 +22,4 @@ export default {
 #calendar-body {
     background-color: rgba(30, 120, 220, .2);
 }
-
 </style>

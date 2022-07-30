@@ -1,21 +1,26 @@
 <template>
     <div id="calendar-base" class="row py-5">
-        <!-- CALENDAR-HEADER -->
-        <div id="calendar-header" class="col text-center py-2">
-            <div class="row py-5">
-                <div class="col-2">
-                    <button @click="goPrev" class="btn btn-outline-dark">&lt;</button>
-                </div>
-                <div class="col-8">
-                    <h3 class="fw-bold text-uppercase">{{ currentDate.format('MMMM YYYY') }}</h3>
-                </div>
-                <div class="col-2">
-                    <button @click="goNext" class="btn btn-outline-dark">&gt;</button>
+        <div class="col">
+
+            <!-- CALENDAR-HEADER -->
+            <div class="row">
+                <div id="calendar-header" class="col text-center py-2">
+                    <div class="row py-5">
+                        <div class="col-2">
+                            <button @click="goPrev" class="btn btn-outline-dark">&lt;</button>
+                        </div>
+                        <div class="col-8">
+                            <h3 class="fw-bold text-uppercase">{{ currentDate.format('MMMM YYYY') }}</h3>
+                        </div>
+                        <div class="col-2">
+                            <button @click="goNext" class="btn btn-outline-dark">&gt;</button>
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <!-- WEEKDAYS -->
-            <div class="calendar-weekdays row fw-bold py-2">
+            <div id="calendar-weekdays" class="row fw-bold py-2">
                 <div class="col text-center">L</div>
                 <div class="col text-center">M</div>
                 <div class="col text-center">M</div>
@@ -25,31 +30,28 @@
                 <div class="col text-center">D</div>
             </div>
 
-
             <!-- CALENDAR-BODY -->
             <div class="row">
                 <calendar-body :weeks="weeks"></calendar-body>
             </div>
 
-
-        </div><!-- /#calendar-header -->
-
+        </div>
     </div>
 </template>
 
 <script>
-// ##### DAYJS
+// ##### DAYJS + FR locale
 import dayjs from 'dayjs';
-// import FR locale
 import 'dayjs/locale/fr.js';
 
 dayjs.locale('fr');
+
 // import weekday plugin
 import weekday from 'dayjs/plugin/weekday.js';
 
 dayjs.extend(weekday);
 
-
+// ##### UTILITIES
 import builder from '../utilities/builder.js';
 
 // ##### COMPONENTS
@@ -62,7 +64,7 @@ export default {
     },
     data() {
         return {
-            builder: builder,
+            builder: builder, // this provides utility methods to build the timeline
             currentDate: dayjs(),
             weeks: [],
         }
@@ -92,7 +94,7 @@ export default {
             this.weeks = this.builder.getWeeks(timeline);
         },
     },
-    mounted() {
+    created() {
         this.buildSchema();
     }
 }
@@ -100,10 +102,14 @@ export default {
 
 <style lang="scss" scoped>
 #calendar-base {
-    background-color: rgba(233, 12, 99, .1);
+    background-color: rgba(233, 12, 99, .05);
 }
 
-.calendar-weekdays {
+#calendar-header {
+    background-color: rgba(233, 190, 40, .2);
+}
+
+#calendar-weekdays {
     background-color: rgba(233, 12, 99, .2);
 }
 </style>
