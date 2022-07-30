@@ -28,11 +28,12 @@ export default {
 
 <style lang="scss">
 #calendar {
+    font-family: 'Montserrat', sans-serif;
 //    These styles will apply to all components
 }
 
 #wrapper {
-    background-color: rgba(200, 190, 20, .1);
+    //background-color: rgba(200, 190, 20, .1);
 }
 
 

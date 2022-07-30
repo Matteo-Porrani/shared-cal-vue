@@ -2,21 +2,20 @@
     <div id="calendar-base" class="row py-5">
         <!-- CALENDAR-HEADER -->
         <div id="calendar-header" class="col text-center py-2">
-            <div class="row">
-                <div class="col-4">
+            <div class="row py-5">
+                <div class="col-2">
                     <button @click="goPrev" class="btn btn-outline-dark">&lt;</button>
                 </div>
-                <div class="col-4">
-                    <h3>{{ currentDate.format('MMMM YYYY') }}</h3>
-                    <h4>jour de la semaine = {{ currentDate.weekday() }}</h4>
+                <div class="col-8">
+                    <h3 class="fw-bold text-uppercase">{{ currentDate.format('MMMM YYYY') }}</h3>
                 </div>
-                <div class="col-4">
+                <div class="col-2">
                     <button @click="goNext" class="btn btn-outline-dark">&gt;</button>
                 </div>
             </div>
 
             <!-- WEEKDAYS -->
-            <div class="row bg-secondary fw-bold py-2">
+            <div class="calendar-weekdays row fw-bold py-2">
                 <div class="col text-center">L</div>
                 <div class="col text-center">M</div>
                 <div class="col text-center">M</div>
@@ -29,7 +28,7 @@
 
             <!-- CALENDAR-BODY -->
             <div class="row">
-                <calendar-body></calendar-body>
+                <calendar-body :weeks="weeks"></calendar-body>
             </div>
 
 
@@ -61,38 +60,32 @@ export default {
     data() {
         return {
             currentDate: dayjs(),
+            weeks: [],
         }
     },
     methods: {
         goPrev() {
             this.currentDate = this.currentDate.subtract(1, 'month');
-            this.makeTimeline();
+            this.buildSchema();
         },
         goNext() {
             this.currentDate = this.currentDate.add(1, 'month');
-            this.makeTimeline();
+            this.buildSchema();
         },
-        makeTimeline() {
+        buildSchema() {
             const firstDayOfMonth = this.currentDate.startOf('month');
-            // console.log(firstDayOfMonth);
-            // console.log(firstDayOfMonth.weekday());
 
             const timeline = [];
-            // this will add 'empty' objects for start padding days
+            // 1. this will add 'empty' objects for start padding days
             this.addEmptyDays(firstDayOfMonth.weekday(), timeline);
-            // this will add 'full' objects with day data
+            // 2. this will add 'full' objects with day data
             this.addFullDays(firstDayOfMonth.daysInMonth(), timeline);
-            // this will fill the month with empty days at the end
+            // 3. this will fill the month with empty days at the end
             while ((timeline.length % 7) > 0) {
                 this.addEmptyDays(1, timeline);
             }
 
-            const weeks = this.getWeeks(timeline);
-
-
-            console.log(weeks);
-
-
+            this.weeks = this.getWeeks(timeline);
         },
         // Int > quantity
         // Array > timeline
@@ -119,17 +112,23 @@ export default {
         getWeeks(timeline) {
             const weeks = [];
             while (timeline.length > 0) {
-                console.log('running');
                 weeks.push(timeline.splice(0, 7));
             }
             return weeks;
         }
     },
+    mounted() {
+        this.buildSchema();
+    }
 }
 </script>
 
 <style lang="scss" scoped>
 #calendar-base {
-    background-color: rgba(200, 120, 20, .1);
+    background-color: rgba(30, 120, 220, .1);
+}
+
+.calendar-weekdays {
+    background-color: rgba(30, 120, 220, .4);
 }
 </style>
