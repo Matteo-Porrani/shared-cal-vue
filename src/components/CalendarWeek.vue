@@ -1,5 +1,5 @@
 <template>
-    <div class="row">
+    <div class="row border border-info">
         <div v-for="(day, index) in days"
              :key="index"
              @click="openBanner()"

@@ -49,6 +49,9 @@ import weekday from 'dayjs/plugin/weekday.js';
 
 dayjs.extend(weekday);
 
+
+import builder from '../utilities/builder.js';
+
 // ##### COMPONENTS
 import CalendarBody from "@/components/CalendarBody.vue";
 
@@ -59,6 +62,7 @@ export default {
     },
     data() {
         return {
+            builder: builder,
             currentDate: dayjs(),
             weeks: [],
         }
@@ -77,45 +81,16 @@ export default {
 
             const timeline = [];
             // 1. this will add 'empty' objects for start padding days
-            this.addEmptyDays(firstDayOfMonth.weekday(), timeline);
+            this.builder.addEmptyDays(firstDayOfMonth.weekday(), timeline);
             // 2. this will add 'full' objects with day data
-            this.addFullDays(firstDayOfMonth.daysInMonth(), timeline);
+            this.builder.addFullDays(firstDayOfMonth.daysInMonth(), timeline);
             // 3. this will fill the month with empty days at the end
             while ((timeline.length % 7) > 0) {
-                this.addEmptyDays(1, timeline);
+                this.builder.addEmptyDays(1, timeline);
             }
 
-            this.weeks = this.getWeeks(timeline);
+            this.weeks = this.builder.getWeeks(timeline);
         },
-        // Int > quantity
-        // Array > timeline
-        addEmptyDays(quantity, timeline) {
-            for (let i=1; i <= quantity; i++) {
-                timeline.push({
-                    type: 'empty',
-                    date: null,
-                });
-            }
-            return timeline;
-        },
-        // Int > quantity
-        // Array > timeline
-        addFullDays(quantity, timeline) {
-            for (let i=1; i <= quantity; i++) {
-                timeline.push({
-                    type: 'full',
-                    date: i,
-                });
-            }
-        },
-        // Array > timeline
-        getWeeks(timeline) {
-            const weeks = [];
-            while (timeline.length > 0) {
-                weeks.push(timeline.splice(0, 7));
-            }
-            return weeks;
-        }
     },
     mounted() {
         this.buildSchema();
@@ -125,10 +100,10 @@ export default {
 
 <style lang="scss" scoped>
 #calendar-base {
-    background-color: rgba(30, 120, 220, .1);
+    background-color: rgba(233, 12, 99, .1);
 }
 
 .calendar-weekdays {
-    background-color: rgba(30, 120, 220, .4);
+    background-color: rgba(233, 12, 99, .2);
 }
 </style>
